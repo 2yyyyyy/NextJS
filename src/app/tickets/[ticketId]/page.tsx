@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { Placeholder } from "@/components/placeholder";
 import { Button } from "@/components/ui/button";
 import { initialTickets } from "@/data";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
-import Link from "next/link";
 
 type TicketDetailPageParams = {
   params: {

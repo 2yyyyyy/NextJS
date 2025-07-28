@@ -1,8 +1,8 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import clsx from "clsx";
+import { Card, CardContent,CardHeader, CardTitle } from "@/components/ui/card";
 import { TICKET_ICONS } from "@/features/ticket/constants";
 import { Ticket } from "@/features/ticket/type";
 import { DetailButton } from "./detali-button";
-import clsx from "clsx";
 
 type TicketItemProps = {
   ticket: Ticket;

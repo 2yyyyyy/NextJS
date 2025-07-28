@@ -1,7 +1,7 @@
-import { homePath, ticketsPath } from "@/path";
 import { LucideKanban } from "lucide-react";
-import { Button } from "./ui/button";
 import Link from "next/link";
+import { homePath, ticketsPath } from "@/path";
+import { Button } from "./ui/button";
 
 const Header = () => {
   return (
