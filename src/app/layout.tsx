@@ -1,11 +1,9 @@
 import "./globals.css";
-import { LucideKanban } from "lucide-react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
 import { Header } from "@/components/header";
-import { Button } from "@/components/ui/button";
-import { homePath, ticketsPath } from "@/path";
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,22 +26,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        <main
-          className="
-            min-h-screen flex-1
-            overflow-y-auto overflow-x-hidden
-            py-24 px-8
-            bg-secondary/20
-            flex flex-col
-          "
-        >
-          {children}
-        </main>
+        <ThemeProvider>
+          <Header />
+          <main
+            className="
+              min-h-screen flex-1
+              overflow-y-auto overflow-x-hidden
+              py-24 px-8
+              bg-secondary/20
+              flex flex-col
+            "
+          >
+            {children}
+          </main>
+          <Toaster expand />
+          {/* <RedirectToast /> */}
+        </ThemeProvider>
       </body>
     </html>
   );

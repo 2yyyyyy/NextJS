@@ -6,7 +6,7 @@ import { ticketPath } from "@/path";
 const DetailButton = ({ ticketId }: { ticketId: string }) => {
   return (
     <Button asChild variant="outline" size="icon">
-      <Link href={ticketPath(ticketId)}>
+      <Link prefetch href={ticketPath(ticketId)}>
         <LucideSquareArrowUpRight className="h-4 w-4" />
       </Link>
     </Button>
