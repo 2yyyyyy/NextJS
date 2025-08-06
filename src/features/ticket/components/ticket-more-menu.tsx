@@ -14,7 +14,7 @@ import {
 import { updateTicketStatus } from "@/features/ticket/action/update-ticket-status";
 import { TICKET_LABELS } from "@/features/ticket/constants";
 import { deleteTicket } from "../action/delete-ticket";
-import { useConfirmDialog } from "./confirm-dialog";
+import { useConfirmDialog } from "../../../components/confirm-dialog";
 
 export type TicketMoreMenuProps = {
   ticket: Ticket;
@@ -22,18 +22,14 @@ export type TicketMoreMenuProps = {
 };
 
 const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
-  // const deleteButton = (
-  //   <DropdownMenuItem className="flex items-center">
-  //     <LucideTrash className="mr-2 h-4 w-4" />
-  //     <span>Delete</span>
-  //   </DropdownMenuItem>
-  // );
   const [deleteButton, deleteDialog] = useConfirmDialog({
     action: deleteTicket.bind(null, ticket.id),
     trigger: (
-      <DropdownMenuItem className="flex items-center">
-        <LucideTrash className="mr-2 h-4 w-4" />
-        <span className="cursor-default">Delete</span>
+      <DropdownMenuItem asChild>
+        <div className="flex items-center gap-x-2 pl-2">
+          <LucideTrash className="size-4" />
+          <span className="cursor-default">Delete</span>
+        </div>
       </DropdownMenuItem>
     ),
   });

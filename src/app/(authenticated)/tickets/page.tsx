@@ -4,13 +4,22 @@ import { CardCompact } from "@/components/card-compact";
 import { Heading } from "@/components/heading";
 import { Placeholder } from "@/components/placeholder";
 import { Spinner } from "@/components/spinner";
+import { getAuth } from "@/features/auth/queries/get-auth";
 import { TicketList } from "@/features/ticket/components/ticket-list";
 import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
+import { SearchParams } from "nuqs/server";
+import { searchParamsCache } from "@/features/ticket/search-params";
 
-const TicketsPage = () => {
+type TicketsPageProps = {
+  searchParams: SearchParams;
+};
+
+const TicketsPage = async ({ searchParams }: TicketsPageProps) => {
+  const { user } = await getAuth();
+
   return (
     <div className="flex-1 flex flex-col gap-y-8">
-      <Heading title="Tickets" description="All you tickets at one place" />
+      <Heading title="My Tickets" description="All your tickets at one place" />
       <CardCompact
         title="Create Ticket"
         description="A new ticket will be created"
@@ -19,7 +28,10 @@ const TicketsPage = () => {
       />
       <ErrorBoundary fallback={<Placeholder label={"Something went wrong!"} />}>
         <Suspense fallback={<Spinner />}>
-          <TicketList />
+          <TicketList
+            userId={user?.id}
+            searchParams={searchParamsCache.parse(await searchParams)}
+          />
         </Suspense>
       </ErrorBoundary>
     </div>

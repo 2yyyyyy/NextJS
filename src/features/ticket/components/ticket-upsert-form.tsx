@@ -1,5 +1,5 @@
 "use client";
-import { Ticket } from "@prisma/client";
+import { Prisma, Ticket } from "@prisma/client";
 import { useActionState, useRef } from "react";
 import {
   DatePicker,
@@ -16,7 +16,15 @@ import { upsertTicket } from "@/features/ticket/action/upsert-ticket";
 import { fromCent } from "@/utils/currency";
 
 type TicketUpsertFormProps = {
-  ticket?: Ticket;
+  ticket?: Prisma.TicketGetPayload<{
+    include: {
+      user: {
+        select: {
+          username: true;
+        };
+      };
+    };
+  }>;
 };
 
 const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {

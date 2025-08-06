@@ -1,0 +1,59 @@
+import Link from "next/link";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Fragment } from "react";
+import { LucideSlash } from "lucide-react";
+
+type BreadcrumbsProps = {
+  breadcrumbs: {
+    title: string;
+    href?: string;
+  }[];
+};
+
+const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        {breadcrumbs.map((breadcrumb, index) => {
+          let breadcrumbItem = (
+            <BreadcrumbPage className="text-lg font-medium">
+              {breadcrumb.title}
+            </BreadcrumbPage>
+          );
+
+          if (breadcrumb.href) {
+            breadcrumbItem = (
+              <BreadcrumbLink asChild className="text-lg font-medium">
+                <Link
+                  href={breadcrumb.href}
+                  className="flex items-center gap-1"
+                >
+                  {breadcrumb.title}
+                </Link>
+              </BreadcrumbLink>
+            );
+          }
+          return (
+            <Fragment key={breadcrumb.title}>
+              <BreadcrumbItem>{breadcrumbItem}</BreadcrumbItem>
+              {index < breadcrumbs.length - 1 && (
+                <BreadcrumbSeparator>
+                  <LucideSlash className="size-4" />
+                </BreadcrumbSeparator>
+              )}
+            </Fragment>
+          );
+        })}
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+};
+
+export { Breadcrumbs };
