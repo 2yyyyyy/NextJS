@@ -1,11 +1,10 @@
-import Link from "next/link";
+import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Heading } from "@/components/heading";
 import { Placeholder } from "@/components/placeholder";
 import { Spinner } from "@/components/spinner";
 import { TicketList } from "@/features/ticket/components/ticket-list";
-import { SearchParams } from "nuqs/server";
 import { searchParamsCache } from "@/features/ticket/search-params";
 
 type HomePageProps = {

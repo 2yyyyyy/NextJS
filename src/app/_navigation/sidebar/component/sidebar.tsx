@@ -1,12 +1,12 @@
 "use client";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { SidebarItem } from "@/app/_navigation/sidebar/component/sidebar-item";
 import { navItems } from "@/app/_navigation/sidebar/constants";
-import { cn } from "@/lib/utils";
 import { useAuth } from "@/features/auth/hooks/use-auth";
-import { usePathname } from "next/navigation";
-import { getActivePath } from "@/utils/get-active-path";
+import { cn } from "@/lib/utils";
 import { signInPath, signUpPath } from "@/path";
+import { getActivePath } from "@/utils/get-active-path";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);

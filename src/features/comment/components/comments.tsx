@@ -1,16 +1,15 @@
 "use client";
-import { CommentItem } from "@/features/comment/components/comment-item";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import { CardCompact } from "@/components/card-compact";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CommentCreateForm } from "@/features/comment/components/comment-create-from";
 import { CommentDeleteButton } from "@/features/comment/components/comment-delete-button";
-import { CommentWithMetadata } from "@/features/comment/type";
-import { Button } from "@/components/ui/button";
+import { CommentItem } from "@/features/comment/components/comment-item";
 import { getComments } from "@/features/comment/queries/get-comments";
+import { CommentWithMetadata } from "@/features/comment/type";
 import { PaginatedData } from "@/type/pagination";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 
 type CommentProps = {
   ticketId: string;

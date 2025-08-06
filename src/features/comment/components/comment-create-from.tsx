@@ -1,13 +1,13 @@
 "use client";
+import { useActionState } from "react";
 import { FieldError } from "@/components/form/field-error";
 import { Form } from "@/components/form/form";
 import { SubmitButton } from "@/components/form/submit-button";
 import { EMPTY_ACTION_STATE } from "@/components/form/utils/to-action-state";
+import { ActionState } from "@/components/form/utils/to-action-state";
 import { Textarea } from "@/components/ui/textarea";
 import { createComment } from "@/features/comment/action/create-comment";
-import { useActionState } from "react";
 import { CommentWithMetadata } from "@/features/comment/type";
-import { ActionState } from "@/components/form/utils/to-action-state";
 
 type CommentCreateFormProps = {
   ticketId: string;

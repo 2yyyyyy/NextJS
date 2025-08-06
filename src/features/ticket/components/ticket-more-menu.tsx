@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { updateTicketStatus } from "@/features/ticket/action/update-ticket-status";
 import { TICKET_LABELS } from "@/features/ticket/constants";
-import { deleteTicket } from "../action/delete-ticket";
 import { useConfirmDialog } from "../../../components/confirm-dialog";
+import { deleteTicket } from "../action/delete-ticket";
 
 export type TicketMoreMenuProps = {
   ticket: Ticket;

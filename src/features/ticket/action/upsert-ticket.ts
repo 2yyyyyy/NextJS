@@ -8,11 +8,10 @@ import {
   formErrorToActionState,
   toActionState,
 } from "@/components/form/utils/to-action-state";
-import { getAuth } from "@/features/auth/queries/get-auth";
 import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect";
 import { isOwner } from "@/features/auth/utils/is-owner";
 import { prisma } from "@/lib/prisma";
-import { signInPath, ticketPath, ticketsPath } from "@/path";
+import { ticketPath, ticketsPath } from "@/path";
 import { toCent } from "@/utils/currency";
 
 const upsertTicketSchema = z.object({

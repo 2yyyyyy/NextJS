@@ -1,6 +1,7 @@
 "use server";
 
-import { setCookieByKey } from "@/action/cookie";
+import { revalidatePath } from "next/cache";
+import z from "zod";
 import {
   ActionState,
   formErrorToActionState,
@@ -9,8 +10,6 @@ import {
 import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect";
 import { prisma } from "@/lib/prisma";
 import { ticketPath } from "@/path";
-import { revalidatePath } from "next/cache";
-import z from "zod";
 
 const createCommentSchema = z.object({
   content: z

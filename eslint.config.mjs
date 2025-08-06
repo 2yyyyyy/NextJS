@@ -24,6 +24,8 @@ const eslintConfig = [
         },
       ],
       "simple-import-sort/exports": "error",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "prefer-const": "warn",
     },
   },
 ];

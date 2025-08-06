@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { toast } from "sonner";
 import {
   ActionState,
   EMPTY_ACTION_STATE,
@@ -21,9 +22,8 @@ import {
   AlertDialogDescription,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
-import { Button } from "./ui/button";
 import { useActionFeedback } from "./form/hooks/use-action-feedback";
+import { Button } from "./ui/button";
 
 type UseConfirmDialogProps = {
   title?: string;

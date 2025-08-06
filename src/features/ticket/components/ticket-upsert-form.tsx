@@ -1,5 +1,5 @@
 "use client";
-import { Prisma, Ticket } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { useActionState, useRef } from "react";
 import {
   DatePicker,

@@ -1,12 +1,10 @@
 import NotFound from "@/app/(authenticated)/tickets/[ticketId]/not-found";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CardCompact } from "@/components/card-compact";
-import { getAuth } from "@/features/auth/queries/get-auth";
-import { isOwner } from "@/features/auth/utils/is-owner";
+import { Separator } from "@/components/ui/separator";
 import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
 import { getTicket } from "@/features/ticket/queries/get-ticket";
 import { homePath, ticketPath } from "@/path";
-import { Separator } from "@/components/ui/separator";
 
 type TicketEditPageParams = {
   params: {

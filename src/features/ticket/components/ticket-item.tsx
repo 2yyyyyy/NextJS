@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import clsx from "clsx";
 import { LucideMoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,8 +12,8 @@ import { EditButton } from "@/features/ticket/components/edit-button";
 import { TicketMoreMenu } from "@/features/ticket/components/ticket-more-menu";
 import { TICKET_ICONS } from "@/features/ticket/constants";
 import { toCurrencyFromCent } from "@/utils/currency";
-import { DetailButton } from "./detali-button";
 import { TicketWithMetadata } from "../type";
+import { DetailButton } from "./detali-button";
 
 type TicketItemProps = {
   ticket: TicketWithMetadata;

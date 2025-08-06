@@ -1,6 +1,6 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import { useDebouncedCallback } from "use-debounce";
+import { Input } from "@/components/ui/input";
 type SearchInputProps = {
   placeholder?: string;
   value: string;

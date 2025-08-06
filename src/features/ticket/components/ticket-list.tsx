@@ -1,10 +1,10 @@
 import { Placeholder } from "@/components/placeholder";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
-import { getTickets } from "@/features/ticket/queries/get-tickets";
-import { ParsedSearchParams } from "@/features/ticket/search-params";
+import { TicketPagination } from "@/features/ticket/components/ticket-pagination";
 import { TicketSearchInput } from "@/features/ticket/components/ticket-search-input";
 import { TicketSortSelect } from "@/features/ticket/components/ticket-sort-select";
-import { TicketPagination } from "@/features/ticket/components/ticket-pagination";
+import { getTickets } from "@/features/ticket/queries/get-tickets";
+import { ParsedSearchParams } from "@/features/ticket/search-params";
 
 type TicketListProps = {
   userId?: string;
@@ -12,7 +12,7 @@ type TicketListProps = {
 };
 
 const TicketList = async ({ userId, searchParams }: TicketListProps) => {
-  let { list: tickets, metadata: ticketMetadata } = await getTickets(
+  const { list: tickets, metadata: ticketMetadata } = await getTickets(
     userId,
     searchParams
   );

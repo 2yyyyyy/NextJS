@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { CardCompact } from "@/components/card-compact";
 import { SignInForm } from "@/features/auth/components/sign-in-form";
-import { SignUpForm } from "@/features/auth/components/sign-up-form";
-import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
-import { passwordForgetPath, signInPath, signUpPath } from "@/path";
+import { passwordForgetPath, signUpPath } from "@/path";
 
 const SignInPage = () => {
   return (

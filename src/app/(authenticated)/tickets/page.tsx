@@ -1,3 +1,4 @@
+import { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { CardCompact } from "@/components/card-compact";
@@ -7,7 +8,6 @@ import { Spinner } from "@/components/spinner";
 import { getAuth } from "@/features/auth/queries/get-auth";
 import { TicketList } from "@/features/ticket/components/ticket-list";
 import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
-import { SearchParams } from "nuqs/server";
 import { searchParamsCache } from "@/features/ticket/search-params";
 
 type TicketsPageProps = {

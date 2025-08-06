@@ -1,11 +1,11 @@
 "use client";
 import { LucideKanban } from "lucide-react";
 import Link from "next/link";
-import { Auth, useAuth } from "@/features/auth/hooks/use-auth";
-import { homePath, signInPath, signUpPath } from "@/path";
+import { AccountDropdown } from "@/app/_navigation/account-dropdown";
 import { ThemeSwitcher } from "@/components/theme/theme-switcher";
 import { Button } from "@/components/ui/button";
-import { AccountDropdown } from "@/app/_navigation/account-dropdown";
+import { useAuth } from "@/features/auth/hooks/use-auth";
+import { homePath, signInPath, signUpPath } from "@/path";
 
 const Header = () => {
   const { user, isFetched } = useAuth();
