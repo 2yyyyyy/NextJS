@@ -1,5 +1,4 @@
 "use server";
-import { verify } from "@node-rs/argon2";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -9,6 +8,7 @@ import {
   formErrorToActionState,
   toActionState,
 } from "@/components/form/utils/to-action-state";
+import { verifyPasswordHash } from "@/features/password/utils/hash-and-verify";
 import { lucia } from "@/lib/lucia";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/path";
@@ -33,7 +33,7 @@ export const signIn = async (_actionState: ActionState, formData: FormData) => {
       return toActionState("ERROR", "Incorrect email or password", formData);
     }
 
-    const validPassword = await verify(user.passwordHash, password);
+    const validPassword = await verifyPasswordHash(user.passwordHash, password);
 
     if (!validPassword) {
       return toActionState("ERROR", "Incorrect email or password", formData);

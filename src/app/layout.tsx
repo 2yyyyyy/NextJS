@@ -51,7 +51,12 @@ export default function RootLayout({
               </main>
             </div>
 
-            <Toaster expand />
+            <Toaster
+              expand
+              toastOptions={{
+                className: "!text-lg !w-100 !h-16",
+              }}
+            />
           </ReactQueryProvider>
           {/* <RedirectToast /> */}
         </ThemeProvider>

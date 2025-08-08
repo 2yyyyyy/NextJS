@@ -1,6 +1,4 @@
 "use server";
-
-import { hash } from "@node-rs/argon2";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -11,6 +9,7 @@ import {
   formErrorToActionState,
   toActionState,
 } from "@/components/form/utils/to-action-state";
+import { hashPassword } from "@/features/password/utils/hash-and-verify";
 import { lucia } from "@/lib/lucia";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/path";
@@ -43,7 +42,7 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
       Object.fromEntries(formData)
     );
 
-    const passwordHash = await hash(password);
+    const passwordHash = await hashPassword(password);
 
     const user = await prisma.user.create({
       data: {

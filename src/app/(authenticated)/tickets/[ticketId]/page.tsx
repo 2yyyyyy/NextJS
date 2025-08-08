@@ -8,9 +8,9 @@ import { getTicket } from "@/features/ticket/queries/get-ticket";
 import { homePath } from "@/path";
 
 type TicketPageParams = {
-  params: {
+  params: Promise<{
     ticketId: string;
-  };
+  }>;
 };
 
 const TicketPage = async ({ params }: TicketPageParams) => {
