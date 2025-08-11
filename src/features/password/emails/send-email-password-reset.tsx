@@ -1,5 +1,5 @@
 import EmailPasswordReset from "@/emails/password/email-password-reset";
-import { resend } from "@/lib/resent";
+import { resend } from "@/lib/resend";
 
 export const sendEmailPasswordReset = async (
   username: string,

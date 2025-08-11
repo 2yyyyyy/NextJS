@@ -26,6 +26,7 @@ const getComments = async (ticketId: string, cursor?: number) => {
             username: true,
           },
         },
+        attachments: true,
       },
       orderBy: [
         {

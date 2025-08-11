@@ -26,7 +26,7 @@ const CardCompact = ({
     <Card className={className}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription className="pt-1">{description}</CardDescription>
       </CardHeader>
       <CardContent>{content}</CardContent>
       {footer && (

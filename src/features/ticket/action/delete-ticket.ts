@@ -10,6 +10,7 @@ import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect"
 import { isOwner } from "@/features/auth/utils/is-owner";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/path";
+import { getTicketPermission } from "../permission/get-ticket-permission";
 
 export const deleteTicket = async (ticketId: string) => {
   const { user } = await getAuthOrRedirect();
@@ -22,6 +23,16 @@ export const deleteTicket = async (ticketId: string) => {
     if (!ticket || !isOwner(user, ticket)) {
       return toActionState("ERROR", "Not Authorized");
     }
+
+    const permission = await getTicketPermission({
+      userId: user.id,
+      organizationId: ticket.organizationId,
+    });
+
+    if (!permission.canDeleteTicket) {
+      return toActionState("ERROR", "Not Authorized");
+    }
+
     await prisma.ticket.delete({
       where: {
         id: ticketId,

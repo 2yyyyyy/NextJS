@@ -9,14 +9,69 @@ datasource db {
 }
 
 model User {
-  id            String       @id @default(uuid())
-  username      String       @unique
-  email         String       @unique
-  passwordHash  String
-  sessions      Session[]
-  passwordResetToken PasswordResetToken[]
-  tickets       Ticket[]
-  comments      Comment[]
+  id                     String       @id @default(uuid())
+  username               String       @unique
+  email                  String       @unique
+  emailVerified          Boolean      @default(false)
+  passwordHash           String
+  sessions               Session[]
+  passwordResetToken     PasswordResetToken[]
+  emailVerificationToken EmailVerificationToken[]
+  memberships            Membership[]
+  tickets                Ticket[]
+  comments               Comment[]
+  invitesByUser          Invitation[]
+}
+
+model Organization {
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  name           String
+  memberships    Membership[]
+  tickets        Ticket[]
+  invitations    Invitation[]
+}
+
+model Invitation {
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  email            String
+  tokenHash        String @unique
+  invitedByUserId  String?
+  invitedByUser    User? @relation(fields: [invitedByUserId], references: [id], onDelete: SetNull)
+  organizationId   String
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  status           InvitationStatus @default(PENDING)
+  @@index([organizationId])
+  @@id(name: "invitationId",[email, organizationId])
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED_WITHOUT_ACCOUNT
+}
+
+model Membership {
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinAt         DateTime     @default(now())
+  isActive       Boolean
+  membershipRole MembershipRole @default(MEMBER)
+
+  // permission
+  canDeleteTicket Boolean @default(true)
+
+  @@index([organizationId])
+  @@index([userId])
+  @@id(name: "membershipId",[organizationId, userId])
+}
+ 
+enum MembershipRole {
+  ADMIN
+  MEMBER
 }
 
 model PasswordResetToken {
@@ -26,32 +81,61 @@ model PasswordResetToken {
   user             User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-
+model EmailVerificationToken {
+  id               String       @id @default(uuid())
+  code             String       
+  userId           String
+  email            String
+  expiresAt        DateTime
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
 
 model Session {
   id        String       @id
   userId    String
   expiresAt DateTime
-  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)  
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)  
 
   @@index([userId])
 }
 
 model Ticket {
-  id        String       @id @default(uuid())
-  title     String
-  content   String       @db.VarChar(1024)
-  status    TicketStatus @default(OPEN)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  deadline  String      
-  bounty    Int
-  userId    String
-  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comments  Comment[]
-
+  id                 String       @id @default(uuid())
+  title              String       @db.VarChar(1024) 
+  content            String       @db.VarChar(1024)
+  status             TicketStatus @default(OPEN)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  deadline           String      
+  bounty             Int
+  userId             String
+  user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments           Comment[]
+  organizationId     String
+  organization       Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  attachments        Attachment[]
+  referencedTickets  Ticket[] @relation("TicketReference")
+  referencingTickets Ticket[] @relation("TicketReference")
   @@index([userId])
+  @@index([organizationId]) 
+}
+
+model Attachment {
+  id        String       @id @default(uuid())
+  name      String
+  entity    AttachmentEntity
+  ticket    Ticket?       @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  ticketId  String?
+  comment   Comment?      @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String?
+  @@index([ticketId])
+  @@index([commentId])
+}
+
+enum AttachmentEntity {
+  TICKET
+  COMMENT
 }
 
 model Comment {
@@ -60,9 +144,10 @@ model Comment {
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
   ticketId  String
-  ticket    Ticket       @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  ticket    Ticket      @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   userId    String?
   user      User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  attachments Attachment[]
 
   @@index([ticketId])
   @@index([userId])

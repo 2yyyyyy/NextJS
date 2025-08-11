@@ -7,11 +7,12 @@ const users = [
   {
     username: "admin",
     email: "admin@admin.com",
+    emailVerified: true,
   },
   {
     username: "user",
-    // use your own email here
     email: "3199085783@qq.com",
+    emailVerified: true,
   },
 ];
 
@@ -52,6 +53,8 @@ const seed = async () => {
   await prisma.comment.deleteMany();
   await prisma.ticket.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.organization.deleteMany();
+  await prisma.membership.deleteMany();
 
   const passwordHash = await hash("123456");
 
@@ -62,10 +65,34 @@ const seed = async () => {
     })),
   });
 
+  const dbOrganization = await prisma.organization.create({
+    data: {
+      name: "Organization 1",
+    },
+  });
+
+  await prisma.membership.createMany({
+    data: [
+      {
+        userId: dbUsers[0].id,
+        organizationId: dbOrganization.id,
+        isActive: true,
+        membershipRole: "ADMIN",
+      },
+      {
+        userId: dbUsers[1].id,
+        organizationId: dbOrganization.id,
+        isActive: false,
+        membershipRole: "MEMBER",
+      },
+    ],
+  });
+
   const dbTickets = await prisma.ticket.createManyAndReturn({
     data: tickets.map((ticket) => ({
       ...ticket,
       userId: dbUsers[0].id,
+      organizationId: dbOrganization.id,
     })),
   });
 
@@ -76,6 +103,7 @@ const seed = async () => {
   //     userId: dbUsers[1].id,
   //   })),
   // });
+
   for (const comment of comments) {
     await prisma.comment.create({
       data: {

@@ -19,9 +19,17 @@ type TicketItemProps = {
   ticket: TicketWithMetadata;
   isDetail?: boolean;
   comments?: React.ReactNode;
+  attachments?: React.ReactNode;
+  referencedTickets?: React.ReactNode;
 };
 
-const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
+const TicketItem = ({
+  ticket,
+  isDetail,
+  comments,
+  attachments,
+  referencedTickets,
+}: TicketItemProps) => {
   const isTicketOwner = ticket.isOwner;
   const moreMenu = (
     <TicketMoreMenu
@@ -83,6 +91,8 @@ const TicketItem = ({ ticket, isDetail, comments }: TicketItemProps) => {
           )}
         </div>
       </div>
+      {attachments}
+      {referencedTickets}
       {comments}
     </div>
   );

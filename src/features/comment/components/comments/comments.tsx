@@ -10,6 +10,8 @@ import { CommentItem } from "@/features/comment/components/comment-item";
 import { getComments } from "@/features/comment/queries/get-comments";
 import { CommentWithMetadata } from "@/features/comment/type";
 import { PaginatedData } from "@/type/pagination";
+import { CommentList } from "../comment-list";
+import { usePaginatedComments } from "./use-paginated-comments";
 
 type CommentProps = {
   ticketId: string;
@@ -17,33 +19,15 @@ type CommentProps = {
 };
 
 const Comments = ({ ticketId, paginatedComments }: CommentProps) => {
-  const queryKey = ["comments", ticketId];
-
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey,
-      queryFn: ({ pageParam }) => getComments(ticketId, pageParam),
-      initialPageParam: undefined as number | undefined,
-      getNextPageParam: (lastPage) =>
-        lastPage.metadata.hasNextPage ? lastPage.metadata.cursor : undefined,
-      initialData: {
-        pages: [
-          {
-            list: paginatedComments.list,
-            metadata: paginatedComments.metadata,
-          },
-        ],
-        pageParams: [undefined],
-      },
-    });
-
-  const queryClient = useQueryClient();
-
-  const handleDeleteComment = () => queryClient.invalidateQueries({ queryKey });
-
-  const handleCreateComment = () => queryClient.invalidateQueries({ queryKey });
-
-  const comments = data.pages.flatMap((page) => page.list);
+  const {
+    comments,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    onDeleteComment,
+    onCreateComment,
+    onDeleteAttachment,
+  } = usePaginatedComments(ticketId, paginatedComments);
 
   const { ref, inView } = useInView();
 
@@ -61,28 +45,16 @@ const Comments = ({ ticketId, paginatedComments }: CommentProps) => {
         content={
           <CommentCreateForm
             ticketId={ticketId}
-            onCreateComment={handleCreateComment}
+            onCreateComment={onCreateComment}
           />
         }
       />
       <div className="flex flex-col gap-y-2 ml-8">
-        {comments.map((comment) => (
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            buttons={[
-              ...(comment.isOwner
-                ? [
-                    <CommentDeleteButton
-                      key="0"
-                      id={comment.id}
-                      onDeleteComment={handleDeleteComment}
-                    />,
-                  ]
-                : []),
-            ]}
-          />
-        ))}
+        <CommentList
+          comments={comments}
+          onDeleteComment={onDeleteComment}
+          onDeleteAttachment={onDeleteAttachment}
+        />
 
         {isFetchingNextPage && (
           <>

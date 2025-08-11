@@ -1,11 +1,11 @@
 "use client";
-import { Ticket, TicketStatus } from "@prisma/client";
-import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { TicketStatus } from "@prisma/client";
 import { LucideTrash } from "lucide-react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
@@ -15,9 +15,10 @@ import { updateTicketStatus } from "@/features/ticket/action/update-ticket-statu
 import { TICKET_LABELS } from "@/features/ticket/constants";
 import { useConfirmDialog } from "../../../components/confirm-dialog";
 import { deleteTicket } from "../action/delete-ticket";
+import { TicketWithMetadata } from "../type";
 
 export type TicketMoreMenuProps = {
-  ticket: Ticket;
+  ticket: TicketWithMetadata;
   trigger: React.ReactNode;
 };
 
@@ -25,11 +26,9 @@ const TicketMoreMenu = ({ ticket, trigger }: TicketMoreMenuProps) => {
   const [deleteButton, deleteDialog] = useConfirmDialog({
     action: deleteTicket.bind(null, ticket.id),
     trigger: (
-      <DropdownMenuItem asChild>
-        <div className="flex items-center gap-x-2 pl-2">
-          <LucideTrash className="size-4" />
-          <span className="cursor-default">Delete</span>
-        </div>
+      <DropdownMenuItem disabled={!ticket.permission.canDeleteTicket}>
+        <LucideTrash className="size-4" />
+        <span className="cursor-default">Delete</span>
       </DropdownMenuItem>
     ),
   });

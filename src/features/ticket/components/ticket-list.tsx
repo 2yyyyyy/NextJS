@@ -8,14 +8,21 @@ import { ParsedSearchParams } from "@/features/ticket/search-params";
 
 type TicketListProps = {
   userId?: string;
+  byOrganization?: boolean;
   searchParams: ParsedSearchParams;
 };
 
-const TicketList = async ({ userId, searchParams }: TicketListProps) => {
+const TicketList = async ({
+  userId,
+  byOrganization = false,
+  searchParams,
+}: TicketListProps) => {
   const { list: tickets, metadata: ticketMetadata } = await getTickets(
     userId,
+    byOrganization,
     searchParams
   );
+  console.log(tickets);
   return (
     <div className="flex-1 flex flex-col items-center gap-y-4 animate-fade-in-from-top">
       <div className="w-full max-w-[420px] flex gap-x-2">

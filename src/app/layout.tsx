@@ -54,7 +54,7 @@ export default function RootLayout({
             <Toaster
               expand
               toastOptions={{
-                className: "!text-lg !w-100 !h-16",
+                className: "!text-lg",
               }}
             />
           </ReactQueryProvider>
