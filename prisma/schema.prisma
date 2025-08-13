@@ -31,6 +31,22 @@ model Organization {
   memberships    Membership[]
   tickets        Ticket[]
   invitations    Invitation[]
+  credentials    Credential[]
+}
+
+model Credential {
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  secretHash     String
+  name           String
+  lastUsed     DateTime?
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+enum CredentialType {
+  PASSWORD
+  OAUTH
 }
 
 model Invitation {
@@ -83,6 +99,7 @@ model PasswordResetToken {
 
 model EmailVerificationToken {
   id               String       @id @default(uuid())
+  createdAt        DateTime     @default(now())
   code             String       
   userId           String
   email            String
@@ -102,7 +119,7 @@ model Session {
 
 model Ticket {
   id                 String       @id @default(uuid())
-  title              String       @db.VarChar(1024) 
+  title              String   
   content            String       @db.VarChar(1024)
   status             TicketStatus @default(OPEN)
   createdAt          DateTime     @default(now())

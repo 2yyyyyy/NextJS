@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { passwordResetPath } from "@/path";
-import { generateRandomToken, hasToken } from "@/utils/crypto";
+import { generateRandomToken, hashToken } from "@/utils/crypto";
 import { getBaseUrl } from "@/utils/url";
 
 const PASSWORD_RESET_TOKEN_LIFETIME_MS = 1000 * 60 * 60 * 2;
@@ -13,7 +13,7 @@ export const generatePasswordResetLink = async (userId: string) => {
   });
 
   const tokenId = generateRandomToken();
-  const tokenHash = hasToken(tokenId);
+  const tokenHash = hashToken(tokenId);
   await prisma.passwordResetToken.create({
     data: {
       tokenHash,

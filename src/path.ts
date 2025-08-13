@@ -43,3 +43,7 @@ export const emailInvitationPath = () => "/email-invitation";
 export const attachmentDownloadPath = (attachmentId: string) => {
   return `/api/ali-oss/attachments/${attachmentId}`;
 };
+
+export const credentialsPath = (organizationId: string) => {
+  return `/organization/${organizationId}/credentials`;
+};

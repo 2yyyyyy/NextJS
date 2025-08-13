@@ -8,7 +8,7 @@ import {
 } from "@/components/form/utils/to-action-state";
 import { prisma } from "@/lib/prisma";
 import { passwordForgetPath, signInPath } from "@/path";
-import { hasToken } from "@/utils/crypto";
+import { hashToken } from "@/utils/crypto";
 import { hashPassword } from "../utils/hash-and-verify";
 const PasswordResetScheme = z
   .object({
@@ -35,7 +35,7 @@ export const passwordReset = async (
       Object.fromEntries(formData)
     );
 
-    const tokenHash = hasToken(tokenId);
+    const tokenHash = hashToken(tokenId);
 
     const passwordResetToken = await prisma.passwordResetToken.findUnique({
       where: {

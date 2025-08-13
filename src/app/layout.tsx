@@ -51,12 +51,7 @@ export default function RootLayout({
               </main>
             </div>
 
-            <Toaster
-              expand
-              toastOptions={{
-                className: "!text-lg",
-              }}
-            />
+            <Toaster expand />
           </ReactQueryProvider>
           {/* <RedirectToast /> */}
         </ThemeProvider>

@@ -1,9 +1,89 @@
 import { getTicket } from "@/features/ticket/queries/get-ticket";
+import { prisma } from "@/lib/prisma";
+import { hashToken } from "@/utils/crypto";
 
 export async function GET(
   _req: Request,
-  { params }: { params: { ticketId: string } }
+  { params }: { params: Promise<{ ticketId: string }> }
 ) {
-  const ticket = await getTicket(params.ticketId);
+  const { ticketId } = await params;
+  const ticket = await getTicket(ticketId);
   return Response.json(ticket);
+}
+
+export async function DELETE(
+  { headers }: Request,
+  { params }: { params: Promise<{ ticketId: string }> }
+) {
+  const bearerToken = new Headers(headers).get("Authorization");
+  const authToken = (bearerToken || "").split("Bearer ").at(1);
+  console.log(authToken);
+
+  if (!authToken) {
+    return Response.json(
+      {
+        error: "Not authorized",
+      },
+      {
+        status: 401,
+      }
+    );
+  }
+
+  const hashedToken = hashToken(authToken);
+
+  const { ticketId } = await params;
+  const ticket = await prisma.ticket.findUnique({
+    where: {
+      id: ticketId,
+    },
+  });
+
+  if (!ticket) {
+    return Response.json(
+      {
+        message: "Ticket not found",
+      },
+      {
+        status: 404,
+      }
+    );
+  }
+
+  const credentials = await prisma.credential.findFirst({
+    where: {
+      secretHash: hashedToken,
+      organizationId: ticket.organizationId,
+    },
+  });
+
+  if (!credentials) {
+    return Response.json(
+      {
+        error: "Not authorized",
+      },
+      {
+        status: 401,
+      }
+    );
+  }
+
+  await prisma.ticket.delete({
+    where: {
+      id: ticketId,
+    },
+  });
+
+  await prisma.credential.update({
+    where: {
+      id: credentials.id,
+    },
+    data: {
+      lastUsed: new Date(),
+    },
+  });
+
+  return Response.json({
+    ticketId,
+  });
 }

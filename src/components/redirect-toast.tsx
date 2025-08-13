@@ -12,7 +12,12 @@ const RedirectToast = () => {
     const showCookitToast = async () => {
       const message = await getCookieByKey("toast");
       if (message) {
-        toast.success(message);
+        toast.success(
+          <div
+            className="[&_a]:outline"
+            dangerouslySetInnerHTML={{ __html: message }}
+          />
+        );
         deleteCookieByKey("toast");
       }
     };

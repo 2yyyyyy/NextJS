@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from "@/components/pagination/page-size";
 import { getAuth } from "@/features/auth/queries/get-auth";
 import { isOwner } from "@/features/auth/utils/is-owner";
 import { getActiveOrganization } from "@/features/organization/queries/get-active-organization";
@@ -13,6 +14,11 @@ export const getTickets = async (
   // const t0 = performance.now();
   // console.log("DB Seed: Started ...");
   const { user } = await getAuth();
+
+  if (!PAGE_SIZE.includes(searchParams.size)) {
+    throw new Error("Invalid page size");
+  }
+
   const activeOrganization = await getActiveOrganization();
 
   const where = {

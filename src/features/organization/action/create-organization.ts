@@ -9,7 +9,7 @@ import {
 } from "@/components/form/utils/to-action-state";
 import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect";
 import { prisma } from "@/lib/prisma";
-import { ticketsPath } from "@/path";
+import { membershipsPath, ticketsPath } from "@/path";
 const createOrganizationScheme = z.object({
   name: z.string().min(1, { message: "Is required" }).max(191),
 });
@@ -22,38 +22,42 @@ export const createOrganization = async (
     checkOrganization: false,
     checkActiveOrganization: false,
   });
+  let organization;
   try {
     const data = createOrganizationScheme.parse(Object.fromEntries(formData));
 
-    await prisma.$transaction(async (tx) => {
-      const organization = await tx.organization.create({
-        data: {
-          ...data,
-          memberships: {
-            create: {
-              userId: user.id,
-              isActive: true,
-              membershipRole: MembershipRole.ADMIN,
-            },
+    // await prisma.$transaction(async (tx) => {
+    organization = await prisma.organization.create({
+      data: {
+        ...data,
+        memberships: {
+          create: {
+            userId: user.id,
+            isActive: true,
+            membershipRole: MembershipRole.ADMIN,
           },
         },
-      });
-      await tx.membership.updateMany({
-        where: {
-          userId: user.id,
-          organizationId: {
-            not: organization.id,
-          },
+      },
+    });
+    await prisma.membership.updateMany({
+      where: {
+        userId: user.id,
+        organizationId: {
+          not: organization.id,
         },
-        data: {
-          isActive: false,
-        },
-      });
+      },
+      data: {
+        isActive: false,
+      },
     });
   } catch (error) {
+    // );
     return formErrorToActionState(error, formData);
   }
 
-  await setCookieByKey("toast", "Organization created");
+  await setCookieByKey(
+    "toast",
+    `<a href="${membershipsPath(organization.id)}">Organization</a> created`
+  );
   redirect(ticketsPath());
 };

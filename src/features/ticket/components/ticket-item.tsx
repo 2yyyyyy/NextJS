@@ -91,8 +91,8 @@ const TicketItem = ({
           )}
         </div>
       </div>
-      {attachments}
       {referencedTickets}
+      {attachments}
       {comments}
     </div>
   );

@@ -95,6 +95,15 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
         </div>
       </div>
 
+      {/* <Input
+        name="files"
+        id="files"
+        type="file"
+        multiple
+        accept={ACCEPTED.join(",")}
+      />
+      <FieldError fieldName="files" actionState={actionState} /> */}
+
       <SubmitButton label={ticket?.id ? "Edit" : "Create"} />
     </Form>
   );

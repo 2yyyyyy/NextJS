@@ -11,7 +11,7 @@ export const generateRandomToken = () => {
   return encodeBase32LowerCaseNoPadding(bytes);
 };
 
-export const hasToken = (token: string) => {
+export const hashToken = (token: string) => {
   return encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 };
 

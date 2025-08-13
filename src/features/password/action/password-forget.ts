@@ -25,7 +25,11 @@ export const passwordForget = async (
     });
 
     if (!user) {
-      return toActionState("ERROR", "Incorrect email", formData);
+      return toActionState(
+        "SUCCESS",
+        "Check your email for a reset link",
+        formData
+      );
     }
 
     await inngest.send({
@@ -35,7 +39,7 @@ export const passwordForget = async (
       },
     });
   } catch (error) {
-    return formErrorToActionState(error, formData);
+    return formErrorToActionState(error);
   }
 
   return toActionState("SUCCESS", "Check your email for a reset link");

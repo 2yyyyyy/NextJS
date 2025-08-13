@@ -12,7 +12,7 @@ const users = [
   {
     username: "user",
     email: "3199085783@qq.com",
-    emailVerified: true,
+    emailVerified: false,
   },
 ];
 
